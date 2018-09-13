@@ -1,0 +1,94 @@
+Find to find size :
+
+find . -name '*.ear' -exec ls -lh {} \;
+find . -name "test*" -exec du -sh {} \;
+find . -name "*.ear" -exec du -a {} \;
+
+find . -name \*.ear -ls
+find . -type f -name *.ear -exec stat -c "%n %s" {} ';' --GNU
+find . -type f -name *.ear -exec stat -f "%N %z" {} ';' -- BSD 
+find . -type f -name *.ear -exec sh -c 'echo "{} $(wc -c < {})"' ';'
+find . -type f -exec ls -lh \{\} \;
+find . -type f -exec wc -c \{\} \;
+find . -name "*.ear" | xargs ls -sh;
+
+find . -type f -iname "*.ear" -exec du -ah {} \; | awk '{print $2"\t", $1}';
+find . -name '*.ear' -exec ls -lh {} \; | awk '{print $5, $9}';
+find . -name '*.ear' -ls | awk '{print $2, $11}';
+
+find . -name "fileabc.txt" -ls -long
+find /local/test/ -name 'fileabc.txt' -print | xargs ls -lt
+find /local/test/ -name 'fileabc.txt' -exec ls -lt '{}' ';'
+find /local/test/ -name 'fileabc.txt' -ls
+
+
+########### How do you test command execution with if clause
+
+if test `more $LOGFILE|grep ORA- |wc -l` -gt 0 -- looks like old way 
+
+
+*************  View Logs **************
+
+Lines to View 
+
+sed -n 101,110p /var/log/cron
+
+Display first N lines of a file
+
+head -n 15 /var/log/maillog
+
+
+Ignore last N lines of a file 
+
+head -n -250 /var/log/secure
+ 
+Display last N lines of the file
+tail -n 50 /var/log/messages
+
+Ignore first N-1 lines of the file
+tail -n +5 /etc/xinetd.conf
+
+Display specific lines (based on line number) of a file using head and tail command
+cat /var/log/anaconda.log | tail -n +101 | head -n 10
+
+
+grep -A 5 "Initializing CPU#1" dmesg	#Display lines matching a pattern, and few [After Match] lines following the match.
+grep -B 2 "linux" test_file1.txt		#Display lined before the matched line.
+ grep -C N [searched] [filename]		#Display around the matched line.
+
+grep -f input *.txt               	# How to make grep obtain patterns from file
+
+grep -x "how are you?" *.txt	  	#How to make grep display only those lines that completely match search pattern
+
+grep -L "how" *.txt 			  	#How to make grep display name of files that do not contain search pattern
+
+grep -lZ "how" *.txt 			  	#How to make grep terminate file names with NULL character
+
+grep -s "how" * 					#How to suppress error messages produced by grep
+
+grep -q "how are you" *.txt 		#How to force grep to not display anything in output
+
+grep "how" -m3 test.txt				#How to limit grep output to a particular number of lines
+
+grep -e how -e to -e forge *.txt 	#How to make grep command handle multiple search patterns
+
+egrep -w 'word1|word2' /path/		#Using grep to search two different words
+
+grep -r "mydomain.com" /etc/apache2/	# Recursive search 
+
+
+################ Grep Section #########
+
+Courtesy : http://www.robelle.com/smugbook/regexpr.html
+
+^ (Caret)		=	match expression at the start of a line, as in ^A.
+$ (Question)	=	match expression at the end of a line, as in A$.
+\ (Back Slash)	=	turn off the special meaning of the next character, as in \^.
+[ ] (Brackets)	=	match any one of the enclosed characters, as in [aeiou]. Use Hyphen "-" for a range, as in [0-9].
+[^ ]			=	match any one character except those enclosed in [ ], as in [^0-9].
+. (Period)		=	match a single character of any value, except end of line.
+* (Asterisk)	=	match zero or more of the preceding character or expression.
+\{x,y\}			=	match x to y occurrences of the preceding.
+\{x\}			=	match exactly x occurrences of the preceding.
+\{x,\}			=	match x or more occurrences of the preceding.
+ 
