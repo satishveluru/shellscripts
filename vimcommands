@@ -857,6 +857,11 @@ Note : Use <Up> and <Down> keys to navigate the list, <Enter> to select a match.
 	:vimgrep /something/g % | copen
 
 
+vim: Fuzzy Search 
+***************
+
+use CTRl -P
+	
 
 Highlight search matches
 **************************
@@ -872,8 +877,6 @@ Highlight search matches
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 Move to the first match (ggn), last (GN), next (n) or previous (N) as usual.
-
-
 
 
 
