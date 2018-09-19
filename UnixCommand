@@ -29,32 +29,23 @@ if test `more $LOGFILE|grep ORA- |wc -l` -gt 0 -- looks like old way
 
 *************  View Logs **************
 
-Lines to View 
-
 sed -n 101,110p /var/log/cron
 
-Display first N lines of a file
+head -n 15 /var/log/maillog  	##Display first N lines of a file
 
-head -n 15 /var/log/maillog
-
-
-Ignore last N lines of a file 
-
-head -n -250 /var/log/secure
+head -n -250 /var/log/secure  	##Ignore last N lines of a file 
  
-Display last N lines of the file
-tail -n 50 /var/log/messages
+tail -n 50 /var/log/messages  	##Display last N lines of the file
 
-Ignore first N-1 lines of the file
-tail -n +5 /etc/xinetd.conf
+tail -n +5 /etc/xinetd.conf  	##Ignore first N-1 lines of the file
 
-Display specific lines (based on line number) of a file using head and tail command
-cat /var/log/anaconda.log | tail -n +101 | head -n 10
+cat /var/log/anaconda.log | tail -n +101 | head -n 10 ##Display specific lines (based on line number) of a file using head and tail command
 
+********************** grep search ************
 
 grep -A 5 "Initializing CPU#1" dmesg	#Display lines matching a pattern, and few [After Match] lines following the match.
 grep -B 2 "linux" test_file1.txt		#Display lined before the matched line.
- grep -C N [searched] [filename]		#Display around the matched line.
+grep -C N [searched] [filename]		#Display around the matched line.
 
 grep -f input *.txt               	# How to make grep obtain patterns from file
 
@@ -91,4 +82,33 @@ $ (Question)	=	match expression at the end of a line, as in A$.
 \{x,y\}			=	match x to y occurrences of the preceding.
 \{x\}			=	match exactly x occurrences of the preceding.
 \{x,\}			=	match x or more occurrences of the preceding.
+
+
+************  Find files and Execute *********************
+
+find . -type f -exec dos2unix {} \;
+
+find . -type f -print0 | xargs -0 dos2unix   				## Wouldn't break if you had spaces in file names.
+
+find . -type f -name "*.php" -print0 | xargs -0 dos2unix  	##Convert only *.php files
+
+find . -type f -print0 | xargs -0 -n 1 -P 4 dos2unix  		##If it's a large directory you may want to consider running with multiple processors:
+
+This will pass 1 file at a time, and use 4 processors.
+
+find -name "*.xml" -exec grep -e "firstWord" -e "secondWord" -e "thirdWord" {} \; -exec sed -s --in-place=.bak -e 's/firstWord/newFirstWord/g;s/secondWord/newSecondWord/g;s/thirdWord/newThirdWord/g' {} \;
+
+************* AWK Commands ***************************
+
+
+*************  Sed Commands **************************
+
+
+
+
+
+
+
+
+
  
