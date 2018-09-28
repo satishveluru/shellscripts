@@ -827,8 +827,164 @@ Tip-69 Act Upon a Collection of Files
 
 Tip -70 Evaluate an Iterator to Number Items in a List
 
+******************  Indentation 
+ Some variables you might want to set:
+
+ :set tabstop 8     - tabs are at proper location
+ :set expandtab     - don't use actual tab character (ctrl-v)
+ :set shiftwidth=4  - indenting is 4 spaces
+ :set autoindent    - turns it on
+ :set smartindent   - does the right thing (mostly) in programs
+ :set cindent       - stricter rules for C programs
+
+I like having auto on, but smart does funny things based on keywords.
+To indent the current line, or a visual block:
+ctrl-t, ctrl-d  - indent current line forward, backwards  (insert mode)
+visual > or <   - indent block by sw (repeat with . )
+
+To stop indenting when pasting with the mouse, add this to your .vimrc:
+:set pastetoggle=<f5>
+
+then try hitting the F5 key while in insert mode (or just :set paste). 
+
+****************************** Reformatting **********************
+reformatting
+These are useful to reformat text paragraphs or chunks of code:
+
+    V=  - select text, then reformat with =
+    =   - will correct alignment of code
+    ==  - one line; 
+    gq  - reformat paragraph
+
+Options to change how automatic formatting is done:
+
+    :set formatoptions (default "tcq")
+        t - textwidth
+        c - comments (plus leader -- see :help comments)
+        q - allogw 'gq' to work
+        n - numbered lists
+        2 - keep second line indent
+        1 - single letter words on next line
+        r - (in mail) comment leader after 
+
+Other related options:
+
+    :set wrapmargin
+    :set textwidth
+	
+******************************* Marking *********************
+markers
+Use markers to set places you want to quickly get back to, or to specify a block of text you want to copy or cut.
+
+ mk      - mark current position (can use a-z)
+ 'k      - move to mark k
+ d'k     - delete from current position to mark k
+ 'a-z    - same file
+ 'A-Z    - between files
+
+A straight tick ' refers to the line, use a backtick ` to also include the column. 	
+	
+************************* Folding ****************************
+Note : https://www.unix.com/unix-for-beginners-questions-and-answers/132518-vim-tips-tricks.html
+
+folding
+Use folds to collapse selected blocks. Useful if you've finished a subroutine and want to save window space, or maybe want to fold all blocks of comments.
+    select block, then :fold
+    zo - open
+    zc - close
+If we want to folding some few lines in vim file:
+
+First select the lines after type :fold
+
+The selected line is folded.
+If we want to open the folded lines use "zo".
+If we want to close the folding lines use zc".
+
+zR Unfold all folded lines in file.
+za Open/close (toggle) a folded group of lines.
+zA Open a closed fold or close an open fold recursively.
+zc Close a folded group of lines.
+zC Close all folded lines recursively.
+zd Delete a folded line.
+zD Delete all folded lines recursively.
+zE Eliminate all folded lines in file.
+zF Create "N" folded lines.	
+
+******************** Word and Line completion ******************
+
+ctrl-n, ctrl-p    - next/previous word completion (similar word in current file)
+ctrl-x ctrl-l (ctrl-n/p)    	- line completion
+:set dictionary=/usr/share/dict/words
+ctrl-x ctrl-k     				- dictionary completion
+ctrl-w      					- erases word (insert mode ...)
+ctrl-u      					- erases line  ...or on command line)
 
 
+******************** VIM command line *************************
+
+vim + file_name
+
++ it will place the cursor at end of the after opening.
++n it will place the cursor at nth line of the file.
+
+Ex: vim +3 fine_name it place the cursor at 3rd line of the file.
+
+vim +/pattern filename
+
++/pattern ( vim +/hi filename). the cursor is first occurrence of the pattern line
+
++n/pattern ( vim +3/hi filename) cursor is nth occurrence of the line.
+
+if you want to search a pattern like "Welcome to vim", see the following examples.
+
+****************** Multiple Windows ***************************
+
+multiple windows
+
+If you want, you can probably do everything from one vim session! :) Here are some commands to turn one vim session (inside one xterm) into multiple windows.
+
+ :e filename      - edit another file
+ :split filename  - split window and load another file
+ ctrl-w up arrow  - move cursor up a window
+ ctrl-w ctrl-w    - move cursor to another window (cycle)
+ ctrl-w_          - maximize current window
+ ctrl-w=          - make all equal size
+ 10 ctrl-w+       - increase window size by 10 lines
+ :vsplit file     - vertical split
+ :sview file      - same as split, but readonly
+ :hide            - close current window
+ :only            - keep only this window open
+ :ls              - show current buffers
+ :b 2             - open buffer #2 in this window
+
+****************** Delete/Cut/paste***********************
+ d^ : Deletes from current cursor position to the beginning of the line.
+d$ : Deletes from current cursor position to the end of the line.
+dw : Deletes from current cursor position to the end of the word.
+dd : Deletes three lines from current cursor position downwards.(also :d)
+yy : Yank the current line (also :y)
+x : Delete a character next to the cursor
+X : Delete character to the left of cursor
+P : Paste line before the cursor
+p : Paste line after the cursor
+. : Repeat last edit command
+u : Undo last edit (Ctrl+r redo)
+U : Undo changes to current line
+J : Join two lines
+
+In Escape mode: C is delete the line from under the cursor to end of the line.
+ 
+************** External Commands **************************
+In Vim it's easy to include the output of external commands in to file.
+!command, the output will be shown in prompt.
+
+To insert the output of the external command in the current file
+type :r!command for example
+Exampel - :r!date
+ 
+********************** Editing a Stream ****************
+find . | vim -
+ 
 Tips At Command line -
 ***************************************************
 
@@ -837,6 +993,47 @@ test -f ~/.git-completion.bash && . $_
 Note: $_ means the last argument to the previous command. so . $_ means run it - "it" being .git-completion.bash in this case
 
 
+************** Completion ************************
+
+Ctrl+p word completion .
+Ctrl+x Ctrl+l whole line completion.
+Ctrl+x Ctrl+k to do a dictionary lookup for the already typed characters.
+Ctrl+x Ctrl+f to print the filename is vim.
+
+*********************** Inventing Case *****************
+~ :changes the lower case to upper case of current character
+~guu :change current line from upper to lower.
+~gUU :Change current LINE from lower to upper.
+~guw :Change current WORD from upper to lower.
+~gUw :Change current WORD from lower to upper.
+g~~ :Invert case to entire line
+
+********************** Line num *****************
+:lineno goes to line in execution mode
+:.= gives current cursor position of line
+:= total no of lines in file
+Ctrl+h acts as a backspace in insert mode
+
+shift + 9 goes to sentence starting point in backward
+shift + 0 goes to sentence starting point in forward
+:e is used for editing another file with out quiting the vim editor cltrl+^ is used to toggle between the two files.
+:syn on command in vimrc file will highlight the syntax during inserting the contents in program.
+
+*************************** Man page *************
+K (Shift+k) will diplays the man page of current word under the cursor
+
+
+******** Splitting Windows **************************
+:sp will split the window
+:q to quit from current split window
+Crtl+ww navigate through another file
+:bnext (or :bn) go to next buffer
+:bprev (or :bp) go to previous buffer
+:bd delete a buffer (close a file)
+Ctrl+ws Split windows
+Ctrl+ww Switch between windows
+Ctrl+wq Quit a window
+Ctrl+wv Split windows vertically.
 
 
 vim: list all matching lines
@@ -864,19 +1061,39 @@ use CTRl -P
 	
 
 Highlight search matches
-**************************
+****************************************************
 
-:set hlsearch
-
-:set nohlsearch -- to disable 
+:set ignorecase - case insensitive
+:set smartcase  - use case if any caps used 
+:set incsearch  - show match as search proceeds
+:set hlsearch   - search highlighting
 
 :noh -- removed the highlighting 
+
+*               - search for word currently under cursor
+g*              - search for partial word under cursor 
+                  (repeat with n)
+ctrl-o, ctrl-i  - go through jump locations
+[I              - show lines with matching word under cursor
 
 
 " Press Space to turn off highlighting and clear any message already displayed.
 :nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
-Move to the first match (ggn), last (GN), next (n) or previous (N) as usual.
+Move to the first match (ggn), 
+						last (GN),
+						next (n) 
+						previous (N) as usual.
+:%s/old/new/g : replace all old with new throughout file
+:%s/old/new/gc : replace all old with new throughout file with confirmations
+
+Note : We can change the substitution delimiter instead of "/" to % or # or @ or !.
+
+:/pattern/= => Print the line number of the first line that matches pattern.
+:g/pattern => Finds (moves to) the last occurrence of pattern in the file.
+:g/pattern/p => Finds and displays all lines in the file containing pattern.
+:g!/pattern/nu => Finds and displays all lines in the file that don't contain pattern;
+:60,124g/pattern/p => Finds and displays any lines between lines 60 and 124 containing pattern						
 
 
 
@@ -893,13 +1110,37 @@ Section save  in vi editor
 ****************
 :6,9w >> /tmp/newfile
 
-search and replace:
-*****************
+
+search and replace in VIM :
+**************************************************
 :%s/^\(Martin\)/Mr \1 Wicks/g --> substitute the string starting with martin with mr martin.
 
+# http://vim.wikia.com/wiki/Search_and_replace
 
+%s/foo/bar/g 						##Find each occurrence of 'foo' (in all lines), and replace it with 'bar'.
 
+:s/foo/bar/g						##Find each occurrence of 'foo' (in the current line only), and replace it with 'bar'. 
 
+:%s/foo/bar/gc						##Change each 'foo' to 'bar', but ask for confirmation first.
+
+:%s/\<foo\>/bar/gc					##Change only whole words exactly matching 'foo' to 'bar'; ask for confirmation. 
+
+:%s/foo/bar/gci						##Change each 'foo' (case insensitive due to the i flag) to 'bar'; ask for confirmation. 
+									:%s/foo\c/bar/gc is the same because \c makes the search case insensitive. 
+									This may be wanted after using :set noignorecase to make searches case sensitive (the default). 
+
+:%s/foo/bar/gcI						##Change each 'foo' (case sensitive due to the I flag) to 'bar'; ask for confirmation. 
+										:%s/foo\C/bar/gc is the same because \C makes the search case sensitive. 
+									This may be wanted after using :set ignorecase to make searches case insensitive. 
+
+									:s/foo/bar/g 	Change each 'foo' to 'bar' in the current line.
+:%s/foo/bar/g 						#Change each 'foo' to 'bar' in all the lines.
+:5,12s/foo/bar/g 					Change each 'foo' to 'bar' for all lines from line 5 to line 12 (inclusive).
+:'a,'bs/foo/bar/g 					Change each 'foo' to 'bar' for all lines from mark a to mark b inclusive (see Note below).
+:'<,'>s/foo/bar/g 					When compiled with +visual, change each 'foo' to 'bar' for all lines within a visual selection. Vim automatically appends the visual selection range ('<,'>) for any ex command when you select an area and enter :. Also, see Note below.
+:.,$s/foo/bar/g 					Change each 'foo' to 'bar' for all lines from the current line (.) to the last line ($) inclusive.
+:.,+2s/foo/bar/g 					Change each 'foo' to 'bar' for the current line (.) and the two next lines (+2).
+:g/^baz/s/foo/bar/g 				Change each 'foo' to 'bar' in each line starting with 'baz'.
 
 
 
