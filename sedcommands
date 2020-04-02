@@ -1,0 +1,169 @@
+---- SEDEditor 
+
+ 1.	sed 's/day/night/' <old >new
+ 2.	echo Sunday | sed 's/day/night/'
+ 3.	sed 's/one/ONE/' <file
+ 
+ Using & as the matched string
+ 
+ sed 's/[a-z]*/(&)/' <old >new
+ 
+ echo "123 abc" | sed 's/[0-9]*/& &/'
+ 
+ echo "123 abc" | sed 's/[0-9][0-9]*/& &/'
+ 
+ Extended Regular Expressions
+ 
+ echo "123 abc" | sed -r 's/[0-9]+/& &/'
+ 
+ 
+ Using \1 to keep part of the pattern
+ 
+ 
+ sed 's/\([a-z]*\).*/\1/'
+ 
+ echo abcd123 | sed 's/\([a-z]*\).*/\1/'
+ 
+ sed 's/\([a-z]*\) \([a-z]*\)/\2 \1/'
+ 
+ sed 's/\([a-z][a-z]*\) \([a-z][a-z]*\)/\2 \1/'
+ 
+ sed -r 's/([a-z]+) ([a-z]+)/\2 \1/'
+ 
+ sed 's/\([a-z]*\) \1/\1/'
+ 
+ sed -n '/\([a-z][a-z]*\) \1/p'
+ 
+ sed -rn '/([a-z]+) \1/p' 
+ 
+ sed 's/^\(.\)\(.\)\(.\)/\3\2\1/'
+ 
+ 
+ Sed Pattern Flags
+ 
+ /g - Global replacement
+ sed 's/[^ ][^ ]*/(&)/g' <old >new
+ 
+ /1, /2, etc. Specifying which occurrence
+ sed 's/\([a-zA-Z]*\) \([a-zA-Z]*\) /\1 /' <old >new
+ 
+ sed 's/[a-zA-Z]* //2' <old >new
+ 
+ sed 's/[a-zA-Z]* /DELETED /2g' <old >new
+ 
+ sed 's/[^ ]*//2' <old >new
+ 
+ sed 's/[^:]*//2' </etc/passwd >/etc/password.new
+ 
+ sed 's/^\([^:]*\):[^:]:/\1::/'  </etc/passwd >/etc/password.new
+ 
+ sed 's/[^:]*:/:/2'  </etc/passwd >/etc/password.new
+ 
+ sed 's/./&:/80' <file >new
+ 
+  You can also do it the hard way by using 80 dots:
+
+sed 's/^................................................................................/&:/' <file >new
+
+
+/p - print
+
+Write to a file with /w filename
+
+sed -n 's/^[0-9]*[02468] /&/w even' <file 
+
+/I - Ignore Case
+sed -n '/abc/I p' <old >new
+
+Combining substitution flags
+sed -n 's/a/A/2pw /tmp/file' <old >new
+
+sed 's/BEGIN/begin/' <old | sed 's/END/end/' >new
+
+sed -e 's/a/A/' -e 's/b/B/' <old >new
+
+
+sed 's/^#.*//'  f1 f2 f3 | grep -v '^$' | wc -l
+
+sed -e 's/^#.*//'  f1 f2 f3 | grep -v '^$' | wc -l
+
+sed -n: no printing
+
+sed  's/PATTERN/&/p' file
+
+sed -n 's/PATTERN/&/p' file
+
+sed --quiet 's/PATTERN/&/p' file
+
+sed --silent 's/PATTERN/&/p' file
+
+
+Using 'sed /pattern/'
+sed '/PATTERN/ p' file
+
+
+Using 'sed -n /pattern/p' to duplicate the function of grep
+sed -n '/PATTERN/p' file
+
+sed -f scriptname
+sed -f sedscript <old >new
+
+
+A sed interpreter script
+Passing arguments into a sed script
+#!/bin/sh
+sed -n 's/'$1'/&/p'
+
+
+#!/bin/sh
+sed -n 's/'"$1"'/&/p'
+
+
+
+
+Addresses and Ranges of Text
+
+Restricting to a line number
+Patterns
+Ranges by line number
+Ranges by patterns
+Delete with d
+Printing with p
+Reversing the restriction with !
+Relationships between d, p, and !
+The q or quit command
+Grouping with { and }
+Operating in a pattern range except for the patterns
+Writing a file with the 'w' command
+Reading in a file with the 'r' command
+SunOS and the # Comment Command
+Adding, Changing, Inserting new lines
+Append a line with 'a'
+Insert a line with 'i'
+Change a line with 'c'
+Leading tabs and spaces in a sed script
+Adding more than one line
+Adding lines and the pattern space
+Address ranges and the above commands
+Multi-Line Patterns
+Print line number with =
+Transform with y
+Displaying control characters with a l
+Working with Multiple Lines
+Matching three lines with sed
+Matching patterns that span multiple lines
+Using newlines in sed scripts
+The Hold Buffer
+Exchange with x
+Example of Context Grep
+Hold with h or H
+Keeping more than one line in the hold buffer
+Get with g or G
+Flow Control
+Testing with t
+Debugging with l
+An alternate way of adding comments
+Passing regular expressions as arguments
+Inserting binary characters
+GNU sed Command Line arguments
+The -posix argument
